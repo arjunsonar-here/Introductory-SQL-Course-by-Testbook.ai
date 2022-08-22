@@ -1,0 +1,244 @@
+Date 22 August 2022 
+
+Thanks to DIVYA THAKUR and SAMPRITI CHATTERJEE
+
+CONCATE 
+
+1. For First name and last name
+
+SELECT First_name || '' || Last_name AS EmployeeName
+FROM Employee;
+
+2. For Address which contain City,State,Postal Code,Country
+
+SELECT Address  || ',' || City  || ',' || State  || ',' || Postal Code  || ',' || Country AS Employee Address
+FROM Employee;
+
+3. For Concatinating 2 Tables we can us as 
+
+SELECT c.first_Name || '' || c.Last_Name AS Customer Name, e.First_Name || '' || e.Last_Name AS Employee Name
+FROM Customrer as c,Employee as e;
+
+
+
+* LIKE OPERATER (Used in WHERE Clause)
+
+1. % Any Number of charcter After or Before %
+
+ Name STARTING Form A
+SELECT Name 
+FROM Artist
+WHERE Name LIKE 'A%';
+
+
+ Name ENDING Form A
+SELECT Name 
+FROM Artist
+WHERE Name LIKE '%A';
+
+ "A" Somewhere In Middle 
+SELECT Name 
+FROM Artist
+WHERE Name LIKE '%A%';
+
+
+2. _  Only one character before or after _
+
+ "B" Only After 1 character  
+
+SELECT Name 
+FROM Artists
+WHERE Name LIKE '_B%'
+
+
+3. a_% Only more than 2 letter will return (such as 'are' not 'as')
+
+
+Real Time Application
+
+A database containing bunch of differeny Emails And we have to return only the "gmail" then we can use the query below as (First Try to do it yourself) 
+
+SELECT Email, First_Name || '' || Last_Name AS Customer Name
+FROM Customers
+WHERE Gmail LIKE '%@gmail%'
+
+
+* NOT Operator
+ Displays the record if the condition is NOT TRUE.
+
+1. If we have to return customers NOT IN 'USA' And 'Canada' form Counrty 
+
+SELECT First_Name || '' || Lastname AS Customer Name, Country 
+FROM Customers
+WHERE Country NOT IN ('USA' 'Canada');
+
+
+* AND Operator 
+Use to Combines 2 or more conditions 
+
+1.If we have to return customers with the Country as USA and State as Calfornia
+
+SELECT First_Name || '' || Last_Name AS Customer Name , State , Country
+FROM Customer
+WHERE Country = 'USA' AND State = 'CA'
+
+
+* OR OPERATOR
+
+1.If we have to return customers who are from Ireland or India or United Kingdom  
+
+SELECT First_Name || '' || Last_Name AS Customer Name, Country
+FROM Customer
+WHERE Country = 'USA' OR Country = 'India' OR Country = 'Ireland'
+
+
+* JOINS 
+
+1. INNER JOINS 
+
+The INNER JOIN will select all the rows from both the TABLES as long as condition is stisfie.
+
+SYNTAX 
+
+SELECT table1.cloumn1,table1.column2,table2.cloumn1,table2.column2
+FROM table1
+INNER JOIN table2 ON table1.matching_column = table2.matching_column; 
+
+
+ To know the Total Billing of a customer from Invoice and Customer Table 
+
+SELECT c.customerID,i.customerID,c.Name,i.Total
+FROM Customers AS c
+JOIN invoice AS i ON c.customerID = i.customerID;
+
+LEFT JOINS  
+
+The LEFT JOIN Keyword returns all the records from the left table, and the matching records from the right table.
+
+SELECT Column Name
+FROM Table1
+LEFT JOIN Table2
+ON table1.column_name = table2.column_name;
+
+**IN SOME TABLES LET JOINS IS ALSO CALLED AS LEFT OUTER JOINS**
+
+2. Doing Multiple LEFT JOINS ON MULTIPLE TABLES
+
+SELECT al.Titlr AS AlbumName,g.name AS Genres, t.Name AS Tarck Name
+FROM tracks AS t
+LEFT JOIN albums as al
+ON t.albumID = al.albumID
+LEFT JOIN geners as g
+ON t.geners = g.genreID
+WHERE g.name = 'Rock' OR g.name = 'Jazz'
+ORDER BY g.name;
+
+
+RIGHT JOINS 
+
+SELECT Column Name
+FROM Table1
+RIGHT JOIN Table2
+ON table1.column_name = table2.column_name;
+
+1. If we want all the invoices from the righht Table
+
+SELECT c.Company , i.Total
+FROM Customers as c
+RIGHT JOIN invoice as i
+ON c.CustomerID = i.CustomerID
+
+
+
+FULL OUTER JOIN (FULL JOIN)
+
+IT returns all the records when there is a match in LEFT ot RIGHT table records.
+
+SYNTAX
+
+SELCT Column_Name
+FROM table1
+FULL OUTER JOIN table2 
+ON table1.column_Name = table2.column_Name
+WHERE condition;
+
+1 to return all the Playlist Name and Track Name
+
+SELECT p.Name AS Playlist , t.Name AS TarckName
+FROM PlaylistTrack as pt
+FULL OUTER JOIN Track as t
+ON pt.TrackID = t.TrackID
+FULL OUTER JOIN Playlist AS p
+ON pt.playlistID = p.playlistID
+ORDER BY p.name;
+
+
+
+
+* ONE TO ONE REALTIONSHIP
+
+When one column in a table is related to only one column in another table and vic versa.
+
+* ONE TO MANY REALTIONSHIP
+
+VICE VERSA 
+
+
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+DATA TYPES IN MYSQL 
+
+
+What is DATA TYPES ?
+
+A Data type is an Attribute that specifices the type of the daata and object can hold such as (Integer,Float.,Character,etc)
+
+
+** GROUP BY 
+
+It groups rows that have the same values into the summary rows, likw "Find the number of the customer in each Country"
+
+It is mostly Used with aggregate functions (COUNT(), MAX(), MIN(), SUM(), AVG()) to group the results set by one or more columns.
+
+1. How many number of tracks fall into each category of Media types??
+
+SELECT COUNT(t.trackID),m.MediaTypeID,m.Name
+FROM tracks as t
+LEFT JOIN Media_types AS m
+ON t.MediaType = m.MediaTypeId
+GROUP BY m.MediaTypeID;
+
+
+** HAVING CLUSE
+
+HAVING Clause was introduce becuace we cannot user WHERE with aggregate Functions.
+
+It can be used only after the GROUP BY Clause.(Instead of WHERE)
+
+
+SELECT c.Country, COUNT(c.CustomerID) AS NumberofCustomers, SUM(i.Total) AS Country Total
+FROM customers AS c
+LEFT JOIN invoice AS i
+ON c.CustomerID = i.CustomerID
+GROUP BY c.Country
+HAVING Country Total < 70.00
+ORDER BY Country Total;
+
+
+* CASE Statements
+
+It goes through conditions and return a value when first condition is met (like an IF-THEN-ELSE Statement)
+
+SYNTAX
+
+CASE
+	WHEN condition1 THEN result1
+	WHEN condition2 THEN result2
+	WHEN condition3 THEN result3
+	ELSE result
+END;
+
+
+
